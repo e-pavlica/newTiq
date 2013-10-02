@@ -1,0 +1,23 @@
+
+
+
+<header><h1 class="font-effect-anaglyph">Tiq Taq Toe</h1></header>
+<nav><h2><span class="player">X</span>'s Turn</h2></nav>
+<div class="boardContainer">
+	<div class="row1">
+		<div id="c1" class="cell col1" onclick="playerTurn(this.id)"></div><div id="c2" class="cell col2" onclick="playerTurn(this.id)" ></div><div id="c3" class="cell col3" onclick="playerTurn(this.id)"></div>
+	</div>
+	<div class="row2">
+		<div id="c4" class="cell col1" onclick="playerTurn(this.id)"></div><div id="c5" class="cell col2" onclick="playerTurn(this.id)"></div><div id="c6" class="cell col3" onclick="playerTurn(this.id)"></div>
+	</div>
+	<div class="row2">
+		<div id="c7" class="cell col1" onclick="playerTurn(this.id)"></div><div id="c8" class="cell col2" onclick="playerTurn(this.id)"></div><div id="c9" class="cell col3" onclick="playerTurn(this.id)"></div>
+	</div>
+	<div id="winNotif">
+		<span id="notif"><span class="player"></span> Wins!</span>
+		<div class="playAgain" onclick="clearCells()">Play Again</div>
+		</div>
+</div>
+<div id="reset" onclick="clearCells()">New Game</div>
+<span id="invisi_load"></span>
+<script src="scripts/ttt_gamescripts.js"></script>
