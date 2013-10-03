@@ -1,6 +1,6 @@
 
 
-
+<!-- 
 <header><h1 class="font-effect-anaglyph">Tiq Taq Toe</h1></header>
 <nav><h2><span class="player">X</span>'s Turn</h2></nav>
 <div class="boardContainer">
@@ -27,16 +27,21 @@
 	</div>
 <div id="reset" onclick="clearCells()">New Game</div>
 <span id="invisi_load"></span>
-
+ -->
  
- <!--<body ng-app ng-controller="codingFunController">-->
-<!--         <header><h1 class="font-effect-anaglyph">Tiq Taq Toe</h1></header>
+<!--<body ng-app ng-controller="codingFunController">-->
+<header><h1 class="font-effect-anaglyph">Tic Tac Toe</h1></header>
+<nav><h2>{{activePlayer + "'s Turn"}} | Turn Counter:{{turnCounter}}</h2></nav>
 <div class="boardContainer">
-    <div class="row" ng-repeat="thing in ticTacRows track by $index" id="row_{{$index}}">
-        <div ng-repeat="thing in ticTacCols track by $index" class="cell c_{{$index}}" ng-click=>
-            {{cell}}
+    <div class="row" ng-repeat="row in ticTacToe track by $index" id="row_{{$index}}">
+        <div ng-repeat="cell in ticTacToe track by $index" ng-class="{cell:true}" ng-click="clickSquare($parent.$index, $index)" id="{{'c' + $parent.$index + '_' + $index}}">
+            .
         </div>
         <div class="clearfix"></div>
+        <div id="winNotif">
+			<span id="notif"><span class="player"></span> Wins!</span>
+			<div class="playAgain" onclick="clearCells()">Play Again</div>
+		</div>
     </div>
 </div>
 <div id="playerInput">
@@ -46,6 +51,7 @@
     <br />
     <button>submit</button>
 </div>
-<div id="reset" onclick="clearCells()">New Game</div> -->
-
+{{ticTacToe}}
+{{state}}
+<div id="reset" onclick="clearCells()">New Game</div>
 <!-- </body> -->
