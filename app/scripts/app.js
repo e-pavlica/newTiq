@@ -5,7 +5,7 @@ angular.module('newTicApp', [])
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        controller: 'mainCtrl'
       })
       .otherwise({
         redirectTo: '/'

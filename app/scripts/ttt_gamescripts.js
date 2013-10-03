@@ -16,11 +16,7 @@ window.onload = function loadMe(){
 		winNotifDiv = document.getElementById("winNotif");
 		winNotifDiv.style.display = "none";
 		allCells = document.getElementsByClassName("cell");
-		//add an onclick property to all "cell" divs
-		for(i = 0; i< allCells.length; ++i){
-		    allCells[i].addEventListener('click', playerTurn(this.id));
-		}
-		
+				
 };
 
 //This code is jQuery's

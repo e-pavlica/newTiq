@@ -16,8 +16,36 @@
 	<div id="winNotif">
 		<span id="notif"><span class="player"></span> Wins!</span>
 		<div class="playAgain" onclick="clearCells()">Play Again</div>
-		</div>
+	</div>
 </div>
+	<div id="playerInput">
+		<input type="text" placeholder="player one" ng-model="playerOne">
+		<br />
+		<input type="text" placeholder="player two" ng-model="playerTwo">
+		<br />
+		<button>submit</button>
+	</div>
 <div id="reset" onclick="clearCells()">New Game</div>
 <span id="invisi_load"></span>
-<script src="scripts/ttt_gamescripts.js"></script>
+
+ 
+ <!--<body ng-app ng-controller="codingFunController">-->
+<!--         <header><h1 class="font-effect-anaglyph">Tiq Taq Toe</h1></header>
+<div class="boardContainer">
+    <div class="row" ng-repeat="thing in ticTacRows track by $index" id="row_{{$index}}">
+        <div ng-repeat="thing in ticTacCols track by $index" class="cell c_{{$index}}" ng-click=>
+            {{cell}}
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div id="playerInput">
+    <input type="text" placeholder="player one" ng-model="playerOne">
+    <br />
+    <input type="text" placeholder="player two" ng-model="playerTwo">
+    <br />
+    <button>submit</button>
+</div>
+<div id="reset" onclick="clearCells()">New Game</div> -->
+
+<!-- </body> -->
