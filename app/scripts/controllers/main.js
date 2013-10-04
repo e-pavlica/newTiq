@@ -50,7 +50,7 @@ function mainCtrl($scope) {
 	    			winNotifDiv.style.display = "block";
 	    		}
 	    		else {
-		    		$scope.activePlayer = this.playerTwo;
+		    		$scope.activePlayer = this.playerOne;
 		    	}
 	    	}
 	    	$scope.turnCounter++;
@@ -83,5 +83,22 @@ function mainCtrl($scope) {
 			}
 		};
     };
+    $scope.clickReset = function(){
+    	var allCells = document.getElementsByClassName("cell");
+    	var winNotifDiv = document.getElementById("winNotif");
+    	var j;
+		for(j=0;j < allCells.length; ++j){
+			allCells[j].innerHTML='';
+			//allCells[j]("placed_o"); ---- write method to remove classes without using jQuery
+			//allCells[j].removeClass("placed_x");
+		}
+		//Reset Counter
+		$scope.turnCounter = 0;
+		//Clear Win notification if present
+		winNotifDiv.style.display = "none";
+		//Reset the TTT array
+		$scope.ticTacToe = [["","",""],["","",""],["","",""]];
+	};
+		
+}			
 
-}

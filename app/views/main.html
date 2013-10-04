@@ -14,9 +14,9 @@
 <header><h1 class="font-effect-anaglyph">Tic Tac Toe</h1></header>
 
 
-<nav><h2>{{activePlayer + "'s Turn"}} | Turn Counter:{{turnCounter}}</h2></nav>
+<nav><h2>{{activePlayer + "'s Turn"}}</h2></nav>
 <div class="boardContainer">
-    <div class="row clearfix" ng-repeat="row in ticTacToe track by $index" id="row_{{$index}}">
+    <div ng-cloak class="row clearfix" ng-repeat="row in ticTacToe track by $index" id="row_{{$index}}">
         <div ng-repeat="cell in ticTacToe track by $index" ng-class="{cell:true}" ng-click="clickSquare($parent.$index, $index)" id="{{'c' + $parent.$index + '_' + $index}}">
 
         	.
@@ -26,8 +26,8 @@
 
 <div id="winNotif" class="clearfix">
 	<span id="notif">{{activePlayer}} Wins!</span>
-	<div class="playAgain" onclick="clearCells()">Play Again</div>
+	<div class="playAgain" ng-click="clickReset()">Play Again</div>
 </div>
 
 
-<div id="reset" onclick="clearCells()">New Game</div>
+<div id="reset" ng-click="clickReset()">New Game</div>
