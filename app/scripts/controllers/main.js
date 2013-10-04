@@ -11,13 +11,19 @@ function mainCtrl($scope) {
     $scope.turnCounter = 0;
     //create a function to clear the welcome/ player name box
     $scope.clearWelcome = function(){
+    	var welcomeDiv = document.getElementById("welcome");
+    	var playerNameDiv = document.getElementById("playerInput");
     	
-    }
+    	welcomeDiv.style.display = "none";
+    	playerNameDiv.style.display = "none";
+    	$scope.activePlayer = this.playerOne;
+    };
     //logic & gameplay functions
     $scope.clickSquare = function(row, col){
     	var cell = event.target;
     	var player;
     	var boardState = "";
+    	var winNotifDiv = document.getElementById("winNotif");
     	var winners = ["111000000", "000111000", "000000111", "100100100", "010010010", "001001001", "100010001", "001010100"];
 	    if (this.ticTacToe[row][col] == "") {
 	    	if (this.turnCounter%2 == 0) {
@@ -26,8 +32,13 @@ function mainCtrl($scope) {
 	    		cell.className += " placed_" + player
 	    		this.ticTacToe[row][col] = player;
 	    		placedItems(player);
-	    		$scope.activePlayer = this.playerTwo;
-	    		console.log(this.activePlayer);
+
+	    		if(winCheck(boardState)){
+	    			winNotifDiv.style.display = "block";
+	    		}
+	    		else {
+		    		$scope.activePlayer = this.playerTwo;
+		    	}
 	       	}
 	    	else {
 	    		player = "o"
@@ -35,7 +46,12 @@ function mainCtrl($scope) {
 	    		cell.className += " placed_" + player
 	    		this.ticTacToe[row][col] = player;
 	    		placedItems(player);
-	    		$scope.activePlayer = this.playerOne;
+	    		if(winCheck(boardState)){
+	    			winNotifDiv.style.display = "block";
+	    		}
+	    		else {
+		    		$scope.activePlayer = this.playerTwo;
+		    	}
 	    	}
 	    	$scope.turnCounter++;
 		}
@@ -55,15 +71,15 @@ function mainCtrl($scope) {
 					boardState += "0";
 				}
 			}
-				console.log(boardState);
+				console.log(boardState); //for debug
 		};
 
 		function winCheck(str) {
 			var i;
 			for(i=0;i<winners.length;++i){
-				if(winners[i] == str)
+				if(winners[i] == str){
 					return true;
-					alert("winner!");
+				}
 			}
 		};
     };

@@ -1,57 +1,33 @@
-
-
-<!-- 
-<header><h1 class="font-effect-anaglyph">Tiq Taq Toe</h1></header>
-<nav><h2><span class="player">X</span>'s Turn</h2></nav>
-<div class="boardContainer">
-	<div class="row1">
-		<div id="c1" class="cell col1" onclick="playerTurn(this.id)"></div><div id="c2" class="cell col2" onclick="playerTurn(this.id)" ></div><div id="c3" class="cell col3" onclick="playerTurn(this.id)"></div>
+	<div id="welcome">
+		<div id="playerInput">
+			<h2>Welcome to</h2>
+			<h1>Tiq Taq Toe</h1>
+			<br />
+			<p>enter your name(s) to start</p>
+		    <input type="text" placeholder="player one" ng-model="playerOne">
+		    <br />
+		    <input type="text" placeholder="player two" ng-model="playerTwo">
+		    <br />
+		    <button ng-click="clearWelcome()">start!</button>
+		</div>
 	</div>
-	<div class="row2">
-		<div id="c4" class="cell col1" onclick="playerTurn(this.id)"></div><div id="c5" class="cell col2" onclick="playerTurn(this.id)"></div><div id="c6" class="cell col3" onclick="playerTurn(this.id)"></div>
-	</div>
-	<div class="row2">
-		<div id="c7" class="cell col1" onclick="playerTurn(this.id)"></div><div id="c8" class="cell col2" onclick="playerTurn(this.id)"></div><div id="c9" class="cell col3" onclick="playerTurn(this.id)"></div>
-	</div>
-	<div id="winNotif">
-		<span id="notif"><span class="player"></span> Wins!</span>
-		<div class="playAgain" onclick="clearCells()">Play Again</div>
-	</div>
-</div>
-	<div id="playerInput">
-		<input type="text" placeholder="player one" ng-model="playerOne">
-		<br />
-		<input type="text" placeholder="player two" ng-model="playerTwo">
-		<br />
-		<button>submit</button>
-	</div>
-<div id="reset" onclick="clearCells()">New Game</div>
-<span id="invisi_load"></span>
- -->
- 
-<!--<body ng-app ng-controller="codingFunController">-->
 <header><h1 class="font-effect-anaglyph">Tic Tac Toe</h1></header>
+
+
 <nav><h2>{{activePlayer + "'s Turn"}} | Turn Counter:{{turnCounter}}</h2></nav>
 <div class="boardContainer">
-    <div class="row" ng-repeat="row in ticTacToe track by $index" id="row_{{$index}}">
+    <div class="row clearfix" ng-repeat="row in ticTacToe track by $index" id="row_{{$index}}">
         <div ng-repeat="cell in ticTacToe track by $index" ng-class="{cell:true}" ng-click="clickSquare($parent.$index, $index)" id="{{'c' + $parent.$index + '_' + $index}}">
-            .
+
+        	.
         </div>
-        <div class="clearfix"></div>
-        <div id="winNotif">
-			<span id="notif"><span class="player"></span> Wins!</span>
-			<div class="playAgain" onclick="clearCells()">Play Again</div>
-		</div>
     </div>
 </div>
-<div id="playerInput">
-    <input type="text" placeholder="player one" ng-model="playerOne">
-    <br />
-    <input type="text" placeholder="player two" ng-model="playerTwo">
-    <br />
-    <button>submit</button>
+
+<div id="winNotif" class="clearfix">
+	<span id="notif">{{activePlayer}} Wins!</span>
+	<div class="playAgain" onclick="clearCells()">Play Again</div>
 </div>
-{{ticTacToe}}
-{{state}}
+
+
 <div id="reset" onclick="clearCells()">New Game</div>
-<!-- </body> -->
