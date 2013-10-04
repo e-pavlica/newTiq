@@ -19,88 +19,14 @@ function mainCtrl($scope) {
     	playerNameDiv.style.display = "none";
     	$scope.activePlayer = $scope.playerOne.name;
     };
-    //logic & gameplay functions
-    $scope.clickSquare = function(row, col){
-    	var cell = event.target;
-    	var player;
-    	var boardState = "";
-    	var winNotifDiv = document.getElementById("winNotif");
-    	var winners = ["111000000", "000111000", "000000111", "100100100", "010010010", "001001001", "100010001", "001010100"];
-	    if (this.ticTacToe[row][col] == "") {
-	    	if (this.turnCounter%2 == 0) {
-	    		player = "x"
-	    		cell.innerHTML = "<img src='../resources/images/big_" + player + ".png' />";
-	    		cell.className += " placed_" + player
-	    		this.ticTacToe[row][col] = player;
-	    		placedItems(player);
-
-	    		if(winCheck(boardState)){
-	    			winNotifDiv.style.display = "block";
-	    		}
-	    		else {
-		    		$scope.activePlayer = this.playerTwo;
-		    	}
-	       	}
-	    	else {
-	    		player = "o"
-	    		cell.innerHTML = "<img src='../resources/images/big_" + player + ".png' />";
-	    		cell.className += " placed_" + player
-	    		this.ticTacToe[row][col] = player;
-	    		placedItems(player);
-	    		if(winCheck(boardState)){
-	    			winNotifDiv.style.display = "block";
-	    		}
-	    		else {
-		    		$scope.activePlayer = this.playerOne;
-		    	}
-	    	}
-	    	$scope.turnCounter++;
-			}
-			else {
-				alert("That square's already full!");
-			}
-		
-
-			function placedItems(gp) {
-				var cellArray = document.getElementsByClassName("cell");
-				var i;
-				for(i=0;i<cellArray.length;++i){
-					var workingCell = cellArray[i].className;
-					if((workingCell.indexOf("placed_"+gp)) >= 0){
-						boardState += "1";
-					}
-					else {
-						boardState += "0";
-					}
-				}
-					console.log(boardState); //for debug
-			};
-
-			function winCheck(str) {
-				var i;
-				for(i=0;i<winners.length;++i){
-					if(winners[i] == str){
-						return true;
-					}
-				}
-			};
-    };
     // define a function to clear the board for a new game
     $scope.clickReset = function(){
-	    	var allCells = document.getElementsByClassName("cell");
-	    	var winNotifDiv = document.getElementById("winNotif");
-	    	var j;
-				for(j=0;j < allCells.length; ++j){
-					allCells[j].innerHTML='';
-					//allCells[j]("placed_o"); ---- write method to remove classes without using jQuery
-					//allCells[j].removeClass("placed_x");
-				}
 				//Reset Counter
 				$scope.turnCounter = 0;
 				//Clear Win notification if present
-				winNotifDiv.style.display = "none";
+				$scope.win = false;
 				//Reset the TTT array
-				$scope.ticTacToe = [["","",""],["","",""],["","",""]];
+				$scope.ticTacToe = [[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}]];
 		};
 		// new click function for gameplay: filling cells form an object-oriented arry rather than manipulating the DOM
 		$scope.clickSquare2 = function(cell) {
