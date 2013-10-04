@@ -4,9 +4,9 @@
 			<h1>Tiq Taq Toe</h1>
 			<br />
 			<p>enter your name(s) to start</p>
-		    <input type="text" placeholder="player one" ng-model="playerOne">
+		    <input type="text" placeholder="player one" ng-model="playerOne.name">
 		    <br />
-		    <input type="text" placeholder="player two" ng-model="playerTwo">
+		    <input type="text" placeholder="player two" ng-model="playerTwo.name">
 		    <br />
 		    <button ng-click="clearWelcome()">start!</button>
 		</div>
@@ -17,14 +17,13 @@
 <nav><h2>{{activePlayer + "'s Turn"}}</h2></nav>
 <div class="boardContainer">
     <div ng-cloak class="row clearfix" ng-repeat="row in ticTacToe track by $index" id="row_{{$index}}">
-        <div ng-repeat="cell in ticTacToe track by $index" ng-class="{cell:true}" ng-click="clickSquare($parent.$index, $index)" id="{{'c' + $parent.$index + '_' + $index}}">
-
-        	.
+        <div ng-repeat="cell in row track by $index" ng-class="{cell:true}" ng-click="clickSquare2(cell)" id="{{'c' + $parent.$index + '_' + $index}}"> 
+        	<img src='../resources/images/{{cell.img}}' />
         </div>
     </div>
 </div>
 
-<div id="winNotif" class="clearfix">
+<div class="winNotif clearfix" ng-class="{winDiv:win}">
 	<span id="notif">{{activePlayer}} Wins!</span>
 	<div class="playAgain" ng-click="clickReset()">Play Again</div>
 </div>

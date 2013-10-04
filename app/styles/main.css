@@ -71,7 +71,7 @@ div {
 	left: -9999px;
 	background: url("../resources/images/xo_sprites.png");
 }
-#winNotif {
+.winNotif {
 	width: 40%;
 	right: 30%;
 	height: 75px;
@@ -86,8 +86,8 @@ div {
 	padding: 5px;
 	display:none;
 	box-shadow: -2px 0 3px red, 2px 0 3px cyan;
-	
 }
+
 .playAgain {
 	margin: 10px auto 0;
 	background: black;
@@ -150,5 +150,7 @@ div {
 }
 .filler {
 	height: 75px;
-	/*display: hidden*/;
+}
+.winDiv {
+	display: block;
 }
