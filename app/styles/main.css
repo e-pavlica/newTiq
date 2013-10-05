@@ -73,7 +73,7 @@ div {
 }
 .winNotif {
 	width: 40%;
-	right: 30%;
+	left: 30%;
 	height: 75px;
 	background-color: rgba(36,36,36,0.8);
 	color: white;

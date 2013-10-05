@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 function mainCtrl($scope) {
 	//Define obejects for player names
@@ -6,8 +6,24 @@ function mainCtrl($scope) {
   	$scope.playerTwo = {name:""};
   	$scope.activePlayer = null;
   	$scope.win = false;
-  	//Array to create the board
-    $scope.ticTacToe = [[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}]];
+  	//create an Array of objects to draw the board
+		$scope.ticTacToe = [];
+
+		$scope.newTic = function() {
+			var gridWidth = 3;
+			for (row=0;row<gridWidth;++row){
+				var newObj = [];
+	  		$scope.ticTacToe.push (newObj);
+	  		for (col=0; col<gridWidth; ++col){
+	  			newObj.push({value:"", img:"1x1.png"});
+	  		}
+	  		// console.log($scope.ticTacToe); //for debug
+	  	};
+	  };
+
+
+    // $scope.ticTacToe = [[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}]];
+    
     //define a turn counter used for determining the next player
     $scope.turnCounter = 0;
     //create a function to clear the welcome/ player name box
@@ -26,7 +42,8 @@ function mainCtrl($scope) {
 				//Clear Win notification if present
 				$scope.win = false;
 				//Reset the TTT array
-				$scope.ticTacToe = [[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}]];
+				$scope.ticTacToe = [];
+				$scope.newTic();
 		};
 		// new click function for gameplay: filling cells form an object-oriented arry rather than manipulating the DOM
 		$scope.clickSquare2 = function(cell) {
@@ -88,8 +105,6 @@ function mainCtrl($scope) {
 				var active = $scope.activePlayer;
 				var one = $scope.playerOne.name;
 				var two = $scope.playerTwo.name;
-				console.log(one);
-				console.log(two);
 				if (active == one) {
 					active = two;
 				}
