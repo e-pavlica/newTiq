@@ -155,7 +155,7 @@ div {
 	display: block;
 }
 
-@media(max-width: 500px){
+@media(max-width: 650px){
 	#welcome {
 		padding-bottom: 200%;
 	}
