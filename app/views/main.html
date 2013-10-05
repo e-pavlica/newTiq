@@ -18,7 +18,7 @@
 <div class="boardContainer" ng-init="newTic()">
     <div ng-cloak class="row clearfix" ng-repeat="row in ticTacToe track by $index" id="row_{{$index}}">
         <div ng-repeat="cell in row track by $index" ng-class="{cell:true}" ng-click="clickSquare2(cell)" id="{{'c' + $parent.$index + '_' + $index}}"> 
-        	<img src='../resources/images/{{cell.img}}' />
+        	<img src='resources/images/{{cell.img}}' />
         </div>
     </div>
 </div>

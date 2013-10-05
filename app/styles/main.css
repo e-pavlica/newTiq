@@ -154,3 +154,16 @@ div {
 .winDiv {
 	display: block;
 }
+
+@media(max-width: 500px){
+	#welcome {
+		padding-bottom: 200%;
+	}
+	#playerInput{
+		width:100%;
+		left:0;
+	}
+	.boardContainer{
+		width:75%;
+	}
+}
