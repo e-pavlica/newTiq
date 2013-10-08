@@ -91,15 +91,34 @@ function mainCtrl($scope) {
 				//winCheck(boardState);
 			};
 			function winCheck(str) {
+				// var winHelper;
+				// angular.forEach(winners, function(winner, key){
+				// 	var j;
+				// 	for(j=0;j<winner.length;++j){
+				// 		winHelper = 0;
+				// 		if(str[j] == winner[j]){
+				// 			winHelper += 1;
+				// 		};
+				// 	console.log(winner + ':' + winHelper);
+				// 	};
+				// });
+				var winHelper;
 				var i;
 				for(i=0;i<winners.length;++i){
-					if(winners[i] == str){
-						console.log ("winner!");
-						return true;
-					}
-				}
-				console.log("finish win check")
+					winHelper = 0;
+					var j;
+					for(j=0;j<str.length;++j){
+						if(str[j] == 1 && str[j] == winners[i][j]){
+							winHelper += 1;
+						};
+					};
+				console.log(winners[i] + ':' + winHelper)
+				if (winHelper == 3) {
+					return true;
+				};
+				};
 			};
+
 			function changePlayers() {
 				console.log("Entered changePlayers");
 				var active = $scope.activePlayer;
