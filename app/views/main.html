@@ -25,6 +25,11 @@
 
 <div class="winNotif clearfix" ng-class="{winDiv:win}">
 	<span id="notif">{{activePlayer}} Wins!</span>
+	<div class="playAgain" ng-click="clickReset()" my-Turn="activePlayer=='evan'">Play Again</div>
+</div>
+
+<div class="winNotif clearfix" ng-class="{winDiv:tie}">
+	<span id="notif">Wah-wah..... <br />It's a tie!</span>
 	<div class="playAgain" ng-click="clickReset()">Play Again</div>
 </div>
 

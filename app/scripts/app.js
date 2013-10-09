@@ -10,4 +10,16 @@ angular.module('newTicApp', [])
       .otherwise({
         redirectTo: '/'
       });
+  })
+  .directive('myTurn', function () { return {
+    replace:true,
+    restrict:"A",
+    link: function(scope, element, attr){
+      scope.$watch(attr.myTurn, function(value) {
+        if(value)
+          element.css('background','#8CC157');
+      })
+    }
+  }
+
   });

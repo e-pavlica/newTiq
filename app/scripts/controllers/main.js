@@ -6,6 +6,7 @@ function mainCtrl($scope) {
   	$scope.playerTwo = {name:""};
   	$scope.activePlayer = null;
   	$scope.win = false;
+  	$scope.tie = false;
   	//create an Array of objects to draw the board
 		$scope.ticTacToe = [];
 
@@ -41,6 +42,8 @@ function mainCtrl($scope) {
 				$scope.turnCounter = 0;
 				//Clear Win notification if present
 				$scope.win = false;
+				//Clear tie notification if present
+				$scope.tie = false;
 				//Reset the TTT array
 				$scope.ticTacToe = [];
 				$scope.newTic();
@@ -71,7 +74,10 @@ function mainCtrl($scope) {
 					$scope.win = true;
 				}
 				else {
-					changePlayers();
+					if($scope.turnCounter >= 8)
+						showTie();
+					else
+						changePlayers();
 				}
 			};
 			function placedItems(player) {
@@ -131,6 +137,9 @@ function mainCtrl($scope) {
 					active = one;
 				}
 				$scope.activePlayer = active;
+			};
+			function showTie(){
+				$scope.tie = true;
 			};
 		};
 }			
