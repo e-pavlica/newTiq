@@ -1,14 +1,18 @@
-	<div id="welcome">
-		<div id="playerInput">
+	<div id="welcome" wait="myGame.ready">
+		<div id="playerInput" ng-hide="nameEntered">
 			<h2>Welcome to</h2>
 			<h1>Tiq Taq Toe</h1>
 			<br />
-			<p>enter your name(s) to start</p>
-		    <input type="text" placeholder="player one" ng-model="myGame.playerOne.name">
+			<p>enter your name to start</p>
+		   <!--  <input type="text" placeholder="player one" ng-model="myGame.playerOne.name">
 		    <br />
-		    <input type="text" placeholder="player two" ng-model="myGame.playerTwo.name">
+		    <input type="text" placeholder="player two" ng-model="myGame.playerTwo.name"> -->
+		    <input type="text" placeholder="your name" ng-model="localPlayer" />
 		    <br />
 		    <button ng-click="clearWelcome()">start!</button>
+		</div>
+		<div id="waiting" wait="myGame.ready">
+			<p>please wait for a second player.</p>
 		</div>
 	</div>
 <header><h1 class="font-effect-anaglyph">Tic Tac Toe</h1></header>
@@ -25,7 +29,7 @@
 
 <div class="winNotif clearfix" ng-class="{winDiv:myGame.win}">
 	<span id="notif">{{myGame.activePlayer}} Wins!</span>
-	<div class="playAgain" ng-click="clickReset()" my-Turn="activePlayer=='evan'">Play Again</div>
+	<div class="playAgain" ng-click="clickReset()">Play Again</div>
 </div>
 
 <div class="winNotif clearfix" ng-class="{winDiv:myGame.tie}">
@@ -35,3 +39,5 @@
 
 
 <div id="reset" ng-click="clickReset()">New Game</div>
+
+<footer>{{$scope.myGame.playerOne.name}} | {{$scope.myGame.playerTwo.name}} </footer>

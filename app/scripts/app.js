@@ -11,13 +11,13 @@ angular.module('newTicApp', ['firebase'])
         redirectTo: '/'
       });
   })
-  .directive('myTurn', function () { return {
+  .directive('wait', function () { return {
     replace:true,
     restrict:"A",
     link: function(scope, element, attr){
-      scope.$watch(attr.myTurn, function(value) {
+      scope.$watch(attr.wait, function(value) {
         if(value)
-          element.css('background','#8CC157');
+          element[0].style.display = "none";
       })
     }
   }
