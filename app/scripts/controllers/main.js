@@ -1,32 +1,83 @@
 // 'use strict';
 
-function mainCtrl($scope) {
-	//Define obejects for player names
-  	$scope.playerOne = {name:""};
-  	$scope.playerTwo = {name:""};
-  	$scope.activePlayer = null;
-  	$scope.win = false;
-  	$scope.tie = false;
-  	//create an Array of objects to draw the board
-		$scope.ticTacToe = [];
+function mainCtrl($scope, angularFire) {
+	$scope.games= {};
+	$scope.myGame = {};
+	$scope.queue = [];
+	$scope.gameUrl = "";
 
-		$scope.newTic = function() {
+	var q = new Firebase("https://tiqtac.firebaseio.com/queue");
+	angularFire(q, $scope, "queue", []);
+
+	var db = new Firebase("https://tiqtac.firebaseio.com/games");
+	var promise = angularFire(db, $scope, "games");
+
+	// var board = new Firebase($scope.gameUrl);
+	// angularFire (board, $scope, "myGame");
+	// console.log("myGame is " + $scope.myGame);
+
+
+	promise.then(function () {
+
+		checkQ();
+		// newGame();
+
+		function checkQ() {
+			console.log('enter checkQ');
+			if($scope.queue == [])
+				newGame();
+			else
+				joinGame();
+		};
+		console.log($scope.myGame);
+
+
+		function newGame() {
+			console.log('create new game...');
+			//create an object that will hold all data for the game
+			var gameBoard = {};
+			//prepare the grid
+			var gamePrep = [];
 			var gridWidth = 3;
 			for (row=0;row<gridWidth;++row){
 				var newObj = [];
-	  		$scope.ticTacToe.push (newObj);
-	  		for (col=0; col<gridWidth; ++col){
-	  			newObj.push({value:"", img:"1x1.png"});
-	  		}
-	  		// console.log($scope.ticTacToe); //for debug
-	  	};
-	  };
+		  		gamePrep.push (newObj);
+		  	  	for (col=0; col<gridWidth; ++col){
+		  		newObj.push({value:"", img:"1x1.png"});
+		  		};
+		  	};
+		  	//add the grid to the gameboard object
+		  	gameBoard.ticTacToe = gamePrep;
+		  	//add properties for players, win, states, and turn counter
+		  	gameBoard.playerOne = "";
+		  	gameBoard.playerTwo = "";
+		  	gameBoard.activePlayer = "";
+		  	gameBoard.win = false;
+		  	gameBoard.tie = false;
+		  	gameBoard.turnCounter =0;
+		  	//gameBoard.open = 0;
+
+		  	//push the new game to firebase
+		  	
+		  	var x = db.push(gameBoard).toString();
+		  	$scope.queue.push({gameUrl:x});
+		  	console.log(x);
+		};
+
+		function joinGame() {
+			console.log('join game....');
+
+			
+			var gameUrl = $scope.queue[0].gameUrl.slice(36);
+			var myGame = db.child(gameUrl);
+			angularFire(myGame, $scope, "myGame" )
+			// $scope.queue.splice(0,1);
+		}
+	});
 
 
-    // $scope.ticTacToe = [[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}],[{value:"", img:"1x1.png"},{value:"", img:"1x1.png"},{value:"", img:"1x1.png"}]];
+
     
-    //define a turn counter used for determining the next player
-    $scope.turnCounter = 0;
     //create a function to clear the welcome/ player name box
     $scope.clearWelcome = function(){
     	var welcomeDiv = document.getElementById("welcome");
@@ -34,47 +85,53 @@ function mainCtrl($scope) {
     	
     	welcomeDiv.style.display = "none";
     	playerNameDiv.style.display = "none";
-    	$scope.activePlayer = $scope.playerOne.name;
+    	$scope.myGame.activePlayer = $scope.myGame.playerOne.name;
     };
-    // define a function to clear the board for a new game
-    $scope.clickReset = function(){
-				//Reset Counter
-				$scope.turnCounter = 0;
-				//Clear Win notification if present
-				$scope.win = false;
-				//Clear tie notification if present
-				$scope.tie = false;
-				//Reset the TTT array
-				$scope.ticTacToe = [];
-				$scope.newTic();
-		};
+
+
+//
+//   REWRITE RESET FUNCTION FOR USE W/ FIREBASE
+//
+  //   // define a function to clear the board for a new game
+  //   $scope.clickReset = function(){
+		// 		//Reset Counter
+		// 		$scope.myGame.turnCounter = 0;
+		// 		//Clear Win notification if present
+		// 		$scope.myGame.win = false;
+		// 		//Clear tie notification if present
+		// 		$scope.myGame.tie = false;
+		// 		//Reset the TTT array
+		// 		$scope.myGame.ticTacToe = [];
+		// 		$scope.newTic();
+		// };
 		// new click function for gameplay: filling cells form an object-oriented arry rather than manipulating the DOM
+		
 		$scope.clickSquare2 = function(cell) {
 			var player;
 			var boardState = "";
 			var winners = ["111000000", "000111000", "000000111", "100100100", "010010010", "001001001", "100010001", "001010100"];
 			if (cell.value == ""){
-				if ($scope.turnCounter%2 == 0){
+				if ($scope.myGame.turnCounter%2 == 0){
 					player = "x";
 					playerTurn(player);
-					$scope.turnCounter++;
+					$scope.myGame.turnCounter++;
 				}
 				else{
 					player = "o";
 					playerTurn(player);
-					$scope.turnCounter++;
+					$scope.myGame.turnCounter++;
 				}
 			};
 			function playerTurn(player) {
 				cell.value = player;
 				cell.img = "big_" + player + ".png";
-				console.log($scope.ticTacToe);
+				console.log($scope.myGame.ticTacToe);
 				placedItems(player);
 				if (winCheck(boardState)){
-					$scope.win = true;
+					$scope.myGame.win = true;
 				}
 				else {
-					if($scope.turnCounter >= 8)
+					if($scope.myGame.turnCounter >= 8)
 						showTie();
 					else
 						changePlayers();
@@ -82,10 +139,10 @@ function mainCtrl($scope) {
 			};
 			function placedItems(player) {
 				var i;
-				for(i=0;i<$scope.ticTacToe.length;++i){
+				for(i=0;i<$scope.myGame.ticTacToe.length;++i){
 					var j;
-					for(j=0;j<$scope.ticTacToe[i].length;++j){
-						if ($scope.ticTacToe[i][j].value == player){
+					for(j=0;j<$scope.myGame.ticTacToe[i].length;++j){
+						if ($scope.myGame.ticTacToe[i][j].value == player){
 							boardState += "1";
 						}
 						else {
@@ -127,19 +184,19 @@ function mainCtrl($scope) {
 
 			function changePlayers() {
 				console.log("Entered changePlayers");
-				var active = $scope.activePlayer;
-				var one = $scope.playerOne.name;
-				var two = $scope.playerTwo.name;
+				var active = $scope.myGame.activePlayer;
+				var one = $scope.myGame.playerOne.name;
+				var two = $scope.myGame.playerTwo.name;
 				if (active == one) {
 					active = two;
 				}
 				else {
 					active = one;
 				}
-				$scope.activePlayer = active;
+				$scope.myGame.activePlayer = active;
 			};
 			function showTie(){
-				$scope.tie = true;
+				$scope.myGame.tie = true;
 			};
 		};
 }			
