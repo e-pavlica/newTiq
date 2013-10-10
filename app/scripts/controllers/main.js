@@ -23,12 +23,12 @@ function mainCtrl($scope, angularFire) {
 		// newGame();
 
 		function checkQ() {
-			console.log('enter checkQ');
-			if($scope.queue == [])
+			console.log($scope.queue.length);
+			if($scope.queue.length == 0)
 				newGame();
-			else
-				joinGame();
-		};
+			joinGame();
+		}
+
 		console.log($scope.myGame);
 
 
@@ -60,7 +60,7 @@ function mainCtrl($scope, angularFire) {
 		  	//push the new game to firebase
 		  	
 		  	var x = db.push(gameBoard).toString();
-		  	$scope.queue.push({gameUrl:x});
+		  	$scope.queue.push({gameUrl:x,joined:0});
 		  	console.log(x);
 		};
 
@@ -71,8 +71,15 @@ function mainCtrl($scope, angularFire) {
 			var gameUrl = $scope.queue[0].gameUrl.slice(36);
 			var myGame = db.child(gameUrl);
 			angularFire(myGame, $scope, "myGame" )
-			// $scope.queue.splice(0,1);
-		}
+			$scope.queue[0].joined += 1;
+			if ($scope.queue[0].joined >=2)
+				removeFromQueue();
+		};
+
+		function removeFromQueue() {
+			$scope.queue.splice(0,1);
+		};
+
 	});
 
 

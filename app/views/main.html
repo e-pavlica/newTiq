@@ -4,9 +4,9 @@
 			<h1>Tiq Taq Toe</h1>
 			<br />
 			<p>enter your name(s) to start</p>
-		    <input type="text" placeholder="player one" ng-model="playerOne.name">
+		    <input type="text" placeholder="player one" ng-model="myGame.playerOne.name">
 		    <br />
-		    <input type="text" placeholder="player two" ng-model="playerTwo.name">
+		    <input type="text" placeholder="player two" ng-model="myGame.playerTwo.name">
 		    <br />
 		    <button ng-click="clearWelcome()">start!</button>
 		</div>
@@ -23,12 +23,12 @@
     </div>
 </div>
 
-<div class="winNotif clearfix" ng-class="{winDiv:win}">
-	<span id="notif">{{activePlayer}} Wins!</span>
+<div class="winNotif clearfix" ng-class="{winDiv:myGame.win}">
+	<span id="notif">{{myGame.activePlayer}} Wins!</span>
 	<div class="playAgain" ng-click="clickReset()" my-Turn="activePlayer=='evan'">Play Again</div>
 </div>
 
-<div class="winNotif clearfix" ng-class="{winDiv:tie}">
+<div class="winNotif clearfix" ng-class="{winDiv:myGame.tie}">
 	<span id="notif">Wah-wah..... <br />It's a tie!</span>
 	<div class="playAgain" ng-click="clickReset()">Play Again</div>
 </div>
