@@ -109,7 +109,7 @@ function mainCtrl($scope, angularFire) {
 		var player;
 		var boardState = "";
 		var winners = ["111000000", "000111000", "000000111", "100100100", "010010010", "001001001", "100010001", "001010100"];
-		if (cell.value == ""){
+		if ($scope.localPlayer == $scope.myGame.activePlayer && cell.value == ""){
 			if ($scope.myGame.turnCounter%2 == 0){
 				player = "x";
 				playerTurn(player);
@@ -124,7 +124,7 @@ function mainCtrl($scope, angularFire) {
 		function playerTurn(player) {
 			cell.value = player;
 			cell.img = "big_" + player + ".png";
-			console.log($scope.myGame.ticTacToe);
+			// console.log($scope.myGame.ticTacToe);
 			placedItems(player);
 			if (winCheck(boardState)){
 				$scope.myGame.win = true;
@@ -149,7 +149,7 @@ function mainCtrl($scope, angularFire) {
 					}
 				}
 			}
-			console.log(boardState); //for debug
+			//console.log(boardState); //for debug
 			//winCheck(boardState);
 		};
 		function winCheck(str) {
@@ -174,7 +174,7 @@ function mainCtrl($scope, angularFire) {
 						winHelper += 1;
 					};
 				};
-			console.log(winners[i] + ':' + winHelper)
+			// console.log(winners[i] + ':' + winHelper)
 			if (winHelper == 3) {
 				return true;
 			};
@@ -182,7 +182,7 @@ function mainCtrl($scope, angularFire) {
 		};
 
 		function changePlayers() {
-			console.log("Entered changePlayers");
+			// console.log("Entered changePlayers");
 			var active = $scope.myGame.activePlayer;
 			var one = $scope.myGame.playerOne.name;
 			var two = $scope.myGame.playerTwo.name;
