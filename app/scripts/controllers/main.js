@@ -7,83 +7,97 @@ function mainCtrl($scope, angularFire) {
 	$scope.localPlayer = "";
 	$scope.nameEntered = false;
 
+	//set a var that will relate to the game being played
+	var firebGame;
+	
+	//set a var for the connection 
+	var connected;
+
+	//set a var for the queue and connect it to firebase
 	var q = new Firebase("https://tiqtac.firebaseio.com/queue");
 	angularFire(q, $scope, "queue", []);
 
+	//set a var for ALL games, and connect to firebase
 	var db = new Firebase("https://tiqtac.firebaseio.com/games");
-	angularFire(db, $scope, "games").then( function() {
-
+	$scope.startHere= function(){
+		angularFire(db, $scope, "games").then (function() {
 		checkQ();
+		})
+	};
 
-		function checkQ() {
-			console.log($scope.queue.length);
-			if($scope.queue.length == 0){
-				newGame();
-			}
-			joinGame();
+	function checkQ() {
+		console.log($scope.queue.length);
+		if($scope.queue.length == 0){
+			newGame();
 		}
+		joinGame();
+	}
 
-		function newGame() {
-			console.log('create new game...');
+	function newGame() {
+		console.log('create new game...');
 
-			//create an object that will hold all data for the game
-			var gameBoard = {};
+		//create an object that will hold all data for the game
+		var gameBoard = {};
 
-			//prepare the grid
-			var gamePrep = [];
-			var gridWidth = 3;
-			for (row=0;row<gridWidth;++row){
-				var newObj = [];
-		  		gamePrep.push (newObj);
-		  	  	for (col=0; col<gridWidth; ++col){
-		  		newObj.push({value:"", img:"1x1.png"});
-		  		};
-		  	};
+		//prepare the grid
+		var gamePrep = [];
+		var gridWidth = 3;
+		for (row=0;row<gridWidth;++row){
+			var newObj = [];
+	  		gamePrep.push (newObj);
+	  	  	for (col=0; col<gridWidth; ++col){
+	  		newObj.push({value:"", img:"1x1.png"});
+	  		};
+	  	};
 
-		  	//add the grid to the gameboard object
-		  	gameBoard.ticTacToe = gamePrep;
+	  	//add the grid to the gameboard object
+	  	gameBoard.ticTacToe = gamePrep;
 
-		  	//add properties for players, win, states, and turn counter
-		  	gameBoard.playerOne = {name:""};
-		  	gameBoard.playerTwo = {name:""};
-		  	gameBoard.activePlayer = "";
-		  	gameBoard.win = false;
-		  	gameBoard.tie = false;
-		  	gameBoard.turnCounter = 0;
-		  	gameBoard.ready = false;
-
-		  	//push the new game to firebase
-		  	var x = db.push(gameBoard).toString();
-		  	$scope.queue.push({gameUrl:x,joined:0});
-		};
-
-		function joinGame() {
-			console.log('join game....');
-			var gameUrl = $scope.queue[0].gameUrl.slice(36);
-			var myGame = db.child(gameUrl);
-			angularFire(myGame, $scope, "myGame" )
-			$scope.queue[0].joined += 1;
-			if ($scope.queue[0].joined >=2)
-				removeFromQueue();
-		};
-
-		function removeFromQueue() {
-			$scope.queue.splice(0,1);
-		};
-	});
+	  	//add properties for players, win, states, and turn counter
+	  	gameBoard.playerOne = {name:""};
+	  	gameBoard.playerTwo = {name:""};
+	  	gameBoard.activePlayer = "";
+	  	gameBoard.win = false;
+	  	gameBoard.tie = false;
+	  	gameBoard.turnCounter = 0;
+	  	gameBoard.ready = false;
+	  	gameBoard.online = true;
 
 
+	  	//push the new game to firebase
+	  	var x = db.push(gameBoard).toString();
+	  	//add the new game to the queue for another player to pick up
+	  	$scope.queue.push({gameUrl:x,joined:0});
+	};
+
+	function joinGame() {
+		console.log('join game....');
+		//get the object ID of the first game in the queue
+		var gameUrl = $scope.queue[0].gameUrl.slice(36);
+		//setup angularfire to connect to game
+		firebGame = db.child(gameUrl);
+		angularFire(firebGame, $scope, "myGame" )
+		//set a var to notify when the opponent disconnects
+		connected = firebGame.child('online');
+		//notify users if a player disconnects:
+		connected.onDisconnect().set(false);
+		//
+		$scope.queue[0].joined += 1;
+		if ($scope.queue[0].joined >=2)
+			removeFromQueue();
+	};
+
+	function removeFromQueue() {
+		$scope.queue.splice(0,1);
+	};
+	
+	
+
+	$scope.startHere();
 
 
     //create a function to clear the welcome/ player name box
     $scope.clearWelcome = function(){
-    	// var welcomeDiv = document.getElementById("welcome");
-    	// var playerNameDiv = document.getElementById("playerInput");
-    	
-    	// welcomeDiv.style.display = "none";
-    	// console.log($scope.myGame.playerOne.name);
-
-    	// playerNameDiv.style.display = "none";
 
     	$scope.nameEntered = true;
     	if ($scope.myGame.playerOne.name == ""){
@@ -96,10 +110,12 @@ function mainCtrl($scope, angularFire) {
     	$scope.myGame.activePlayer = $scope.myGame.playerOne.name;
     };
 
-	   // define a function to clear the board for a new game
+	// define a function to clear the board for a new game
     $scope.clickReset = function(){
-		$scope.myGame = {};
 		$scope.nameEntered = false;
+		$scope.gameUrl = "";
+		firebGame.unauth();
+		checkQ();
 
 	};
 

@@ -4,15 +4,13 @@
 			<h1>Tiq Taq Toe</h1>
 			<br />
 			<p>enter your name to start</p>
-		   <!--  <input type="text" placeholder="player one" ng-model="myGame.playerOne.name">
-		    <br />
-		    <input type="text" placeholder="player two" ng-model="myGame.playerTwo.name"> -->
 		    <input type="text" placeholder="your name" ng-model="localPlayer" />
 		    <br />
 		    <button ng-click="clearWelcome()">start!</button>
 		</div>
 		<div id="waiting" wait="myGame.ready">
 			<p>please wait for a second player.</p>
+			<!-- <p>invite your friend to play: </p> -->
 		</div>
 	</div>
 <header><h1 class="font-effect-anaglyph">Tic Tac Toe</h1></header>
@@ -28,16 +26,19 @@
 </div>
 
 <div class="winNotif clearfix" ng-class="{winDiv:myGame.win}">
-	<span id="notif">{{myGame.activePlayer}} Wins!</span>
+	<span>{{myGame.activePlayer}} Wins!</span>
 	<div class="playAgain" ng-click="clickReset()">Play Again</div>
 </div>
 
 <div class="winNotif clearfix" ng-class="{winDiv:myGame.tie}">
-	<span id="notif">Wah-wah..... <br />It's a tie!</span>
+	<span>Wah-wah..... <br />It's a tie!</span>
+	<div class="playAgain" ng-click="clickReset()">Play Again</div>
+</div>
+
+<div class="winNotif clearfix" ng-class="{winDiv:myGame.online==false}">
+	<span>The other user has left the game.</span>
 	<div class="playAgain" ng-click="clickReset()">Play Again</div>
 </div>
 
 
 <div id="reset" ng-click="clickReset()">New Game</div>
-
-<footer>{{$scope.myGame.playerOne.name}} | {{$scope.myGame.playerTwo.name}} </footer>

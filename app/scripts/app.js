@@ -7,6 +7,7 @@ angular.module('newTicApp', ['firebase'])
         templateUrl: 'views/main.html',
         controller: 'mainCtrl'
       })
+      // .when('/game/:gameUrl')
       .otherwise({
         redirectTo: '/'
       });
@@ -16,8 +17,14 @@ angular.module('newTicApp', ['firebase'])
     restrict:"A",
     link: function(scope, element, attr){
       scope.$watch(attr.wait, function(value) {
-        if(value)
+        switch(value){
+        case true:
           element[0].style.display = "none";
+          break;
+        case false:
+          element[0].style.display = "block";
+          break;
+        }
       })
     }
   }
