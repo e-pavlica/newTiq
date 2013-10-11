@@ -125,7 +125,7 @@ angular.module('newTicApp')
 		// $scope.nameEntered = false;
 		// $scope.gameUrl = "";
 		// angularFire(db, $scope, "games").then (function() {
-		// $scope.myGame = undefined;
+		$scope.myGame = undefined;
 		checkQ();
 		// })
 	};
