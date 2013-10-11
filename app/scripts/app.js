@@ -1,15 +1,22 @@
 'use strict';
 
-angular.module('newTicApp', ['firebase'])
-  .config(function ($routeProvider) {
+angular.module('newTicApp', ['firebase', 'ngRoute'])
+  .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'mainCtrl'
+        controller: 'mainCtrl',
+        action: null
       })
-      // .when('/game/:gameUrl')
       .otherwise({
         redirectTo: '/'
+      });
+    $locationProvider.html5Mode(true);
+    $routeProvider
+      .when('/game/:gameNumber', {
+        templateUrl: 'views/main.html',
+        controller: 'mainCtrl',
+        action: "joinFromUrl"
       });
   })
   .directive('wait', function () { return {

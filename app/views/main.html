@@ -13,7 +13,7 @@
 			<!-- <p>invite your friend to play: </p> -->
 		</div>
 	</div>
-<header><h1 class="font-effect-anaglyph">Tic Tac Toe</h1></header>
+<header><h1 class="font-effect-anaglyph">Tiq Taq Toe</h1></header>
 
 
 <nav><h2>{{myGame.activePlayer + "'s Turn"}}</h2></nav>
@@ -35,10 +35,12 @@
 	<div class="playAgain" ng-click="clickReset()">Play Again</div>
 </div>
 
-<div class="winNotif clearfix" ng-class="{winDiv:myGame.online==false}">
+<div class="winNotif clearfix" ng-class="{winDiv:myGame.online==false || myGame.reset}">
 	<span>The other user has left the game.</span>
 	<div class="playAgain" ng-click="clickReset()">Play Again</div>
 </div>
+
+
 
 
 <div id="reset" ng-click="clickReset()">New Game</div>

@@ -1,9 +1,17 @@
 
-function mainCtrl($scope, angularFire) {
+function mainCtrl($scope, $route, $routeParams, $location, angularFire) {
+	$scope.$route = $route;
+    $scope.$location = $location;
+    $scope.$routeParams = $routeParams;
+
+    $scope.renderAction = $route.current.action;
+
+
+
 	$scope.games= {};
-	$scope.myGame = {};
+	$scope.myGame;
 	$scope.queue = [];
-	$scope.gameUrl = "";
+	$scope.gameUrl = ($routeParams.gameNumber || "");
 	$scope.localPlayer = "";
 	$scope.nameEntered = false;
 
@@ -19,13 +27,12 @@ function mainCtrl($scope, angularFire) {
 
 	//set a var for ALL games, and connect to firebase
 	var db = new Firebase("https://tiqtac.firebaseio.com/games");
-	$scope.startHere= function(){
-		angularFire(db, $scope, "games").then (function() {
+	angularFire(db, $scope, "games").then (function() {
 		checkQ();
 		})
-	};
 
 	function checkQ() {
+
 		console.log($scope.queue.length);
 		if($scope.queue.length == 0){
 			newGame();
@@ -62,6 +69,7 @@ function mainCtrl($scope, angularFire) {
 	  	gameBoard.turnCounter = 0;
 	  	gameBoard.ready = false;
 	  	gameBoard.online = true;
+	  	gameBoard.reset = false;
 
 
 	  	//push the new game to firebase
@@ -91,10 +99,6 @@ function mainCtrl($scope, angularFire) {
 		$scope.queue.splice(0,1);
 	};
 	
-	
-
-	$scope.startHere();
-
 
     //create a function to clear the welcome/ player name box
     $scope.clearWelcome = function(){
@@ -112,11 +116,20 @@ function mainCtrl($scope, angularFire) {
 
 	// define a function to clear the board for a new game
     $scope.clickReset = function(){
+    	// $scope.myGame.reset = true;
+   		$scope.myGame.reset = true;
 		$scope.nameEntered = false;
 		$scope.gameUrl = "";
-		firebGame.unauth();
+		// firebGame.set($scope.myGame);
+		// firebGame.update();
+		// firebGame.unauth();
+		// db.unauth();
+		// $scope.nameEntered = false;
+		// $scope.gameUrl = "";
+		// angularFire(db, $scope, "games").then (function() {
+		// $scope.myGame = undefined;
 		checkQ();
-
+		// })
 	};
 
 
