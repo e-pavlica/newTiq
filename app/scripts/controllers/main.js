@@ -45,9 +45,11 @@ angular.module('newTicApp')
 		//prepare the grid
 		var gamePrep = [];
 		var gridWidth = 3;
+		var row;
 		for (row=0;row<gridWidth;++row){
 			var newObj = [];
 	  		gamePrep.push (newObj);
+	  		var col;
 	  	  	for (col=0; col<gridWidth; ++col){
 	  		newObj.push({value:"", img:"1x1.png"});
 	  		};
