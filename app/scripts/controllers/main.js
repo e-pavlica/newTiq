@@ -1,17 +1,13 @@
 
-function mainCtrl($scope, $route, $routeParams, $location, angularFire) {
-	$scope.$route = $route;
-    $scope.$location = $location;
-    $scope.$routeParams = $routeParams;
-
-    $scope.renderAction = $route.current.action;
+angular.module('newTicApp')
+  .controller('mainCtrl', function ($scope, angularFire) {
 
 
 
 	$scope.games= {};
 	$scope.myGame;
 	$scope.queue = [];
-	$scope.gameUrl = ($routeParams.gameNumber || "");
+	$scope.gameUrl = "";
 	$scope.localPlayer = "";
 	$scope.nameEntered = false;
 
@@ -29,7 +25,7 @@ function mainCtrl($scope, $route, $routeParams, $location, angularFire) {
 	var db = new Firebase("https://tiqtac.firebaseio.com/games");
 	angularFire(db, $scope, "games").then (function() {
 		checkQ();
-		})
+		});
 
 	function checkQ() {
 
@@ -84,7 +80,7 @@ function mainCtrl($scope, $route, $routeParams, $location, angularFire) {
 		var gameUrl = $scope.queue[0].gameUrl.slice(36);
 		//setup angularfire to connect to game
 		firebGame = db.child(gameUrl);
-		angularFire(firebGame, $scope, "myGame" )
+		angularFire(firebGame, $scope, "myGame" );
 		//set a var to notify when the opponent disconnects
 		connected = firebGame.child('online');
 		//notify users if a player disconnects:
@@ -227,5 +223,5 @@ function mainCtrl($scope, $route, $routeParams, $location, angularFire) {
 			$scope.myGame.tie = true;
 		};
 	};
-}			
+});			
 

@@ -11,13 +11,6 @@ angular.module('newTicApp', ['firebase', 'ngRoute'])
       .otherwise({
         redirectTo: '/'
       });
-    $locationProvider.html5Mode(true);
-    $routeProvider
-      .when('/game/:gameNumber', {
-        templateUrl: 'views/main.html',
-        controller: 'mainCtrl',
-        action: "joinFromUrl"
-      });
   })
   .directive('wait', function () { return {
     replace:true,
