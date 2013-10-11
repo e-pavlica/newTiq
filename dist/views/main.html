@@ -1,0 +1,46 @@
+<div id="welcome" wait="myGame.ready">
+		<div id="playerInput" ng-hide="nameEntered">
+			<h2>Welcome to</h2>
+			<h1>Tiq Taq Toe</h1>
+			<br>
+			<p>enter your name to start</p>
+		    <input type="text" placeholder="your name" ng-model="localPlayer">
+		    <br>
+		    <button ng-click="clearWelcome()">start!</button>
+		</div>
+		<div id="waiting" wait="myGame.ready">
+			<p>please wait for a second player.</p>
+			<!-- <p>invite your friend to play: </p> -->
+		</div>
+	</div>
+<header><h1 class="font-effect-anaglyph">Tiq Taq Toe</h1></header>
+
+
+<nav><h2>{{myGame.activePlayer + "'s Turn"}}</h2></nav>
+<div class="boardContainer" ng-init="newTic()">
+    <div class="row clearfix" ng-repeat="row in myGame.ticTacToe track by $index" id="row_{{$index}}">
+        <div ng-repeat="cell in row track by $index" ng-class="{cell:true}" ng-click="clickSquare2(cell)" id="{{'c' + $parent.$index + '_' + $index}}"> 
+        	<img ng-src="resources/images/{{cell.img}}">
+        </div>
+    </div>
+</div>
+
+<div class="winNotif clearfix" ng-class="{winDiv:myGame.win}">
+	<span>{{myGame.activePlayer}} Wins!</span>
+	<div class="playAgain" ng-click="clickReset()">Play Again</div>
+</div>
+
+<div class="winNotif clearfix" ng-class="{winDiv:myGame.tie}">
+	<span>Wah-wah..... <br>It's a tie!</span>
+	<div class="playAgain" ng-click="clickReset()">Play Again</div>
+</div>
+
+<div class="winNotif clearfix" ng-class="{winDiv:myGame.online==false || myGame.reset}">
+	<span>The other user has left the game.</span>
+	<div class="playAgain" ng-click="clickReset()">Play Again</div>
+</div>
+
+
+
+
+<div id="reset" ng-click="clickReset()">New Game</div>

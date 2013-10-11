@@ -240,7 +240,7 @@ module.exports = function (grunt) {
     copy: {
       dist: {
          files: [{
-               expand: true,
+                expand: true,
                 dest: '<%= yeoman.dist %>',
                 cwd: 'heroku',
                 src: '*',
@@ -251,6 +251,7 @@ module.exports = function (grunt) {
                     }
                     return path.join(dest, src);
                 }
+            }]
         }, {
           expand: true,
           cwd: '.tmp/images',
