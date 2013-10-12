@@ -3,13 +3,15 @@ angular.module('newTicApp')
   .controller('mainCtrl', function ($scope, angularFire) {
 
 
+  	function initSession(){
+		$scope.games= {};
+		$scope.myGame;
+		$scope.queue = [];
+		$scope.gameUrl = "";
+		$scope.localPlayer = "";
+		$scope.nameEntered = false;
 
-	$scope.games= {};
-	$scope.myGame;
-	$scope.queue = [];
-	$scope.gameUrl = "";
-	$scope.localPlayer = "";
-	$scope.nameEntered = false;
+	};
 
 	//set a var that will relate to the game being played
 	var firebGame;
@@ -17,15 +19,19 @@ angular.module('newTicApp')
 	//set a var for the connection 
 	var connected;
 
+	//set a var for all games
+	var db;
+
 	//set a var for the queue and connect it to firebase
 	var q = new Firebase("https://tiqtac.firebaseio.com/queue");
-	angularFire(q, $scope, "queue", []);
+	angularFire(q, $scope, "queue", []).then (function() {
+		db = new Firebase("https://tiqtac.firebaseio.com/games");
+		angularFire(db, $scope, "games").then (function() {
+			checkQ();
+			});
+	})
 
-	//set a var for ALL games, and connect to firebase
-	var db = new Firebase("https://tiqtac.firebaseio.com/games");
-	angularFire(db, $scope, "games").then (function() {
-		checkQ();
-		});
+	initSession();
 
 	function checkQ() {
 
@@ -74,6 +80,17 @@ angular.module('newTicApp')
 	  	var x = db.push(gameBoard).toString();
 	  	//add the new game to the queue for another player to pick up
 	  	$scope.queue.push({gameUrl:x,joined:0});
+
+
+	  	//join game
+		var gameUrl = $scope.queue[0].gameUrl.slice(36);
+		//setup angularfire to connect to game
+		firebGame = db.child(gameUrl);
+		angularFire(firebGame, $scope, "myGame" );
+		//set a var to notify when the opponent disconnects
+		connected = firebGame.child('online');
+		//notify users if a player disconnects:
+		connected.onDisconnect().set(false);
 	};
 
 	function joinGame() {
@@ -87,10 +104,7 @@ angular.module('newTicApp')
 		connected = firebGame.child('online');
 		//notify users if a player disconnects:
 		connected.onDisconnect().set(false);
-		//
-		$scope.queue[0].joined += 1;
-		if ($scope.queue[0].joined >=2)
-			removeFromQueue();
+		removeFromQueue();
 	};
 
 	function removeFromQueue() {
@@ -115,19 +129,14 @@ angular.module('newTicApp')
 	// define a function to clear the board for a new game
     $scope.clickReset = function(){
     	// $scope.myGame.reset = true;
-   		$scope.myGame.reset = true;
-		$scope.nameEntered = false;
-		$scope.gameUrl = "";
-		// firebGame.set($scope.myGame);
-		// firebGame.update();
-		// firebGame.unauth();
-		// db.unauth();
-		// $scope.nameEntered = false;
-		// $scope.gameUrl = "";
-		// angularFire(db, $scope, "games").then (function() {
-		$scope.myGame = undefined;
+   		delete $scope.games;
+		delete $scope.myGame;
+		delete $scope.queue;
+		delete $scope.gameUrl;
+		delete $scope.localPlayer;
+		delete $scope.nameEntered;
+		initSession();
 		checkQ();
-		// })
 	};
 
 
@@ -163,6 +172,7 @@ angular.module('newTicApp')
 					changePlayers();
 			}
 		};
+
 		function placedItems(player) {
 			var i;
 			for(i=0;i<$scope.myGame.ticTacToe.length;++i){
@@ -179,18 +189,8 @@ angular.module('newTicApp')
 			//console.log(boardState); //for debug
 			//winCheck(boardState);
 		};
+
 		function winCheck(str) {
-			// var winHelper;
-			// angular.forEach(winners, function(winner, key){
-			// 	var j;
-			// 	for(j=0;j<winner.length;++j){
-			// 		winHelper = 0;
-			// 		if(str[j] == winner[j]){
-			// 			winHelper += 1;
-			// 		};
-			// 	console.log(winner + ':' + winHelper);
-			// 	};
-			// });
 			var winHelper;
 			var i;
 			for(i=0;i<winners.length;++i){
